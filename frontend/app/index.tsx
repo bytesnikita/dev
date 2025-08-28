@@ -355,11 +355,32 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     paddingVertical: 12,
     borderRadius: 25,
+    marginBottom: 12,
   },
   retryButtonText: {
     color: '#1a1a1a',
     fontSize: 16,
     fontWeight: '600',
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  altButton: {
+    backgroundColor: '#333333',
+    paddingHorizontal: 24,
+    paddingVertical: 10,
+    borderRadius: 20,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#87CEEB',
+  },
+  altButtonText: {
+    color: '#87CEEB',
+    fontSize: 14,
+    fontWeight: '500',
+    textAlign: 'center',
   },
   telegramButton: {
     position: 'absolute',
