@@ -118,15 +118,37 @@ export default function Index() {
   const [timeoutReached, setTimeoutReached] = useState(false);
   const webViewRef = useRef(null);
 
-  // Timeout mechanism
+  // Enhanced timeout mechanism with automatic Telegram redirect
   React.useEffect(() => {
     const timer = setTimeout(() => {
       if (loading) {
         setTimeoutReached(true);
-        setError(true);
         setLoading(false);
+        
+        // Automatically redirect to Telegram after 15-second timeout
+        Alert.alert(
+          'Сайт недоступен',
+          'Перенаправляем вас в Telegram канал...',
+          [
+            {
+              text: 'Отмена',
+              style: 'cancel',
+              onPress: () => setError(true)
+            },
+            {
+              text: 'Перейти в Telegram',
+              onPress: () => handleTelegramPress(),
+              style: 'default'
+            }
+          ]
+        );
+        
+        // Auto-redirect after 3 seconds if no user action
+        setTimeout(() => {
+          handleTelegramPress();
+        }, 3000);
       }
-    }, 20000); // 20 second timeout
+    }, 15000); // 15 second timeout
 
     return () => clearTimeout(timer);
   }, [loading, currentUrl]);
