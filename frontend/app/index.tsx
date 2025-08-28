@@ -231,7 +231,7 @@ export default function Index() {
           <>
             <WebView
               ref={webViewRef}
-              source={{ uri: WEBSITE_URL }}
+              source={{ uri: currentUrl }}
               style={styles.webView}
               onLoad={handleWebViewLoad}
               onError={handleWebViewError}
@@ -250,6 +250,8 @@ export default function Index() {
               onHttpError={(syntheticEvent) => {
                 const { nativeEvent } = syntheticEvent;
                 console.warn('HTTP error:', nativeEvent);
+                setError(true);
+                setLoading(false);
               }}
               onNavigationStateChange={(navState) => {
                 console.log('Navigation state changed:', navState.url);
