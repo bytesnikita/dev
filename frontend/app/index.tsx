@@ -162,9 +162,26 @@ export default function Index() {
   const handleRefresh = () => {
     setLoading(true);
     setError(false);
+    setTimeoutReached(false);
     if (webViewRef.current) {
       webViewRef.current.reload();
     }
+  };
+
+  const tryAlternativeUrl = () => {
+    const alternativeUrl = 'https://xn--80ajbuhsbe.xn--p1ai/список-приложений/'; // Punycode version
+    setCurrentUrl(alternativeUrl);
+    setLoading(true);
+    setError(false);
+    setTimeoutReached(false);
+  };
+
+  const tryHomePage = () => {
+    const homeUrl = 'https://минутка96.рф';
+    setCurrentUrl(homeUrl);
+    setLoading(true);
+    setError(false);
+    setTimeoutReached(false);
   };
 
   const renderError = () => (
