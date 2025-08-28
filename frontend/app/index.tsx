@@ -189,11 +189,25 @@ export default function Index() {
       <Ionicons name="warning-outline" size={64} color="#87CEEB" />
       <Text style={styles.errorTitle}>Ошибка загрузки</Text>
       <Text style={styles.errorMessage}>
-        Не удается загрузить сайт минутка96.рф
+        {timeoutReached 
+          ? 'Истекло время ожидания загрузки сайта' 
+          : 'Не удается загрузить сайт минутка96.рф'
+        }
       </Text>
-      <TouchableOpacity style={styles.retryButton} onPress={handleRefresh}>
-        <Text style={styles.retryButtonText}>Повторить</Text>
-      </TouchableOpacity>
+      
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.retryButton} onPress={handleRefresh}>
+          <Text style={styles.retryButtonText}>Повторить</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.altButton} onPress={tryAlternativeUrl}>
+          <Text style={styles.altButtonText}>Попробовать другой URL</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.altButton} onPress={tryHomePage}>
+          <Text style={styles.altButtonText}>Главная страница</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 
