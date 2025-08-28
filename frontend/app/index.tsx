@@ -1,30 +1,279 @@
-import { Text, View, StyleSheet, Image } from "react-native";
+import React, { useState, useRef } from 'react';
+import { 
+  View, 
+  StyleSheet, 
+  TouchableOpacity, 
+  Alert, 
+  StatusBar,
+  Text,
+  ActivityIndicator,
+  Platform,
+  SafeAreaView
+} from 'react-native';
+import { WebView } from 'react-native-webview';
+import * as Linking from 'expo-linking';
+import { Ionicons } from '@expo/vector-icons';
 
-const EXPO_PUBLIC_BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+const WEBSITE_URL = 'https://минутка96.рф';
+const TELEGRAM_URL = 'https://t.me/+c-W14SGdvFczMzZi';
+
+// Dark theme CSS injection for the website
+const DARK_THEME_CSS = `
+  (function() {
+    const style = document.createElement('style');
+    style.innerHTML = \`
+      * {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+        border-color: #333333 !important;
+      }
+      
+      body, html {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+      }
+      
+      div, span, p, h1, h2, h3, h4, h5, h6 {
+        background-color: transparent !important;
+        color: #ffffff !important;
+      }
+      
+      a {
+        color: #87CEEB !important;
+      }
+      
+      input, textarea, select {
+        background-color: #2d2d2d !important;
+        color: #ffffff !important;
+        border: 1px solid #555555 !important;
+      }
+      
+      img {
+        opacity: 0.8 !important;
+        filter: brightness(0.8) !important;
+      }
+      
+      .header, .nav, .menu {
+        background-color: #262626 !important;
+      }
+      
+      .content, .main, .article {
+        background-color: #1a1a1a !important;
+      }
+    \`;
+    document.head.appendChild(style);
+  })();
+`;
 
 export default function Index() {
-  console.log(EXPO_PUBLIC_BACKEND_URL, "EXPO_PUBLIC_BACKEND_URL");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const webViewRef = useRef(null);
+
+  const handleTelegramPress = async () => {
+    try {
+      const canOpen = await Linking.canOpenURL(TELEGRAM_URL);
+      if (canOpen) {
+        await Linking.openURL(TELEGRAM_URL);
+      } else {
+        Alert.alert(
+          'Telegram не установлен',
+          'Установите приложение Telegram для перехода к каналу',
+          [{ text: 'OK' }]
+        );
+      }
+    } catch (error) {
+      console.error('Error opening Telegram:', error);
+      Alert.alert('Ошибка', 'Не удается открыть ссылку Telegram');
+    }
+  };
+
+  const handleWebViewLoad = () => {
+    setLoading(false);
+    setError(false);
+  };
+
+  const handleWebViewError = () => {
+    setLoading(false);
+    setError(true);
+  };
+
+  const handleRefresh = () => {
+    setLoading(true);
+    setError(false);
+    if (webViewRef.current) {
+      webViewRef.current.reload();
+    }
+  };
+
+  const renderError = () => (
+    <View style={styles.errorContainer}>
+      <Ionicons name="warning-outline" size={64} color="#87CEEB" />
+      <Text style={styles.errorTitle}>Ошибка загрузки</Text>
+      <Text style={styles.errorMessage}>
+        Не удается загрузить сайт минутка96.рф
+      </Text>
+      <TouchableOpacity style={styles.retryButton} onPress={handleRefresh}>
+        <Text style={styles.retryButtonText}>Повторить</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={require("../assets/images/app-image.png")}
-        style={styles.image}
-      />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#1a1a1a" />
+      
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Минутка96</Text>
+        <TouchableOpacity onPress={handleRefresh} style={styles.refreshButton}>
+          <Ionicons name="refresh" size={24} color="#87CEEB" />
+        </TouchableOpacity>
+      </View>
+
+      {/* WebView Container */}
+      <View style={styles.webViewContainer}>
+        {error ? (
+          renderError()
+        ) : (
+          <>
+            <WebView
+              ref={webViewRef}
+              source={{ uri: WEBSITE_URL }}
+              style={styles.webView}
+              onLoad={handleWebViewLoad}
+              onError={handleWebViewError}
+              onLoadEnd={() => setLoading(false)}
+              injectedJavaScript={DARK_THEME_CSS}
+              javaScriptEnabled={true}
+              domStorageEnabled={true}
+              startInLoadingState={true}
+              scalesPageToFit={true}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              allowsInlineMediaPlayback={true}
+              mediaPlaybackRequiresUserAction={false}
+            />
+            
+            {/* Loading Overlay */}
+            {loading && (
+              <View style={styles.loadingOverlay}>
+                <ActivityIndicator size="large" color="#87CEEB" />
+                <Text style={styles.loadingText}>Загрузка...</Text>
+              </View>
+            )}
+          </>
+        )}
+      </View>
+
+      {/* Floating Telegram Button */}
+      <TouchableOpacity
+        style={styles.telegramButton}
+        onPress={handleTelegramPress}
+        activeOpacity={0.8}
+      >
+        <Ionicons name="paper-plane" size={28} color="#ffffff" />
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0c0c0c",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#1a1a1a',
   },
-  image: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "contain",
+  header: {
+    height: 56,
+    backgroundColor: '#262626',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333333',
+  },
+  headerTitle: {
+    color: '#ffffff',
+    fontSize: 20,
+    fontWeight: '600',
+  },
+  refreshButton: {
+    padding: 8,
+  },
+  webViewContainer: {
+    flex: 1,
+    position: 'relative',
+  },
+  webView: {
+    flex: 1,
+    backgroundColor: '#1a1a1a',
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#1a1a1a',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+  },
+  loadingText: {
+    color: '#ffffff',
+    fontSize: 16,
+    marginTop: 12,
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#1a1a1a',
+    paddingHorizontal: 32,
+  },
+  errorTitle: {
+    color: '#ffffff',
+    fontSize: 24,
+    fontWeight: '600',
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  errorMessage: {
+    color: '#cccccc',
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 24,
+    lineHeight: 22,
+  },
+  retryButton: {
+    backgroundColor: '#87CEEB',
+    paddingHorizontal: 32,
+    paddingVertical: 12,
+    borderRadius: 25,
+  },
+  retryButtonText: {
+    color: '#1a1a1a',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  telegramButton: {
+    position: 'absolute',
+    bottom: 32,
+    right: 24,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: '#87CEEB',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
   },
 });
