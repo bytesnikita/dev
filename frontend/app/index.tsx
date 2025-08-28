@@ -271,9 +271,15 @@ export default function Index() {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Минутка96</Text>
-        <TouchableOpacity onPress={handleRefresh} style={styles.refreshButton}>
-          <Ionicons name="refresh" size={24} color="#87CEEB" />
-        </TouchableOpacity>
+        <View style={styles.headerButtons}>
+          <TouchableOpacity onPress={handleTelegramPress} style={styles.headerTelegramButton}>
+            <Ionicons name="paper-plane" size={20} color="#87CEEB" />
+            <Text style={styles.headerTelegramText}>Test</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleRefresh} style={styles.refreshButton}>
+            <Ionicons name="refresh" size={24} color="#87CEEB" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* WebView Container */}
