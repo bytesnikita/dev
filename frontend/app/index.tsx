@@ -155,19 +155,50 @@ export default function Index() {
 
   const handleTelegramPress = async () => {
     try {
+      console.log('Attempting to open Telegram URL:', TELEGRAM_URL);
       const canOpen = await Linking.canOpenURL(TELEGRAM_URL);
+      console.log('Can open Telegram URL:', canOpen);
+      
       if (canOpen) {
         await Linking.openURL(TELEGRAM_URL);
+        console.log('Successfully opened Telegram');
       } else {
-        Alert.alert(
-          'Telegram не установлен',
-          'Установите приложение Telegram для перехода к каналу',
-          [{ text: 'OK' }]
-        );
+        // Try alternative Telegram URL format
+        const altTelegramUrl = 'tg://join?invite=c-W14SGdvFczMzZi';
+        const canOpenAlt = await Linking.canOpenURL(altTelegramUrl);
+        
+        if (canOpenAlt) {
+          await Linking.openURL(altTelegramUrl);
+        } else {
+          Alert.alert(
+            'Telegram не установлен',
+            'Для перехода к каналу установите приложение Telegram из Google Play Store',
+            [
+              {
+                text: 'Открыть в браузере',
+                onPress: () => Linking.openURL(TELEGRAM_URL)
+              },
+              { text: 'Отмена', style: 'cancel' }
+            ]
+          );
+        }
       }
     } catch (error) {
       console.error('Error opening Telegram:', error);
-      Alert.alert('Ошибка', 'Не удается открыть ссылку Telegram');
+      Alert.alert(
+        'Ошибка', 
+        'Не удается открыть ссылку Telegram. Попробуйте еще раз.',
+        [
+          {
+            text: 'Копировать ссылку',
+            onPress: () => {
+              // Note: Clipboard not available in this context, just show URL
+              Alert.alert('Ссылка на канал', TELEGRAM_URL);
+            }
+          },
+          { text: 'OK' }
+        ]
+      );
     }
   };
 
