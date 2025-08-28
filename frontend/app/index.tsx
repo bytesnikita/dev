@@ -14,7 +14,7 @@ import { WebView } from 'react-native-webview';
 import * as Linking from 'expo-linking';
 import { Ionicons } from '@expo/vector-icons';
 
-const WEBSITE_URL = 'https://минутка96.рф/список-приложений/';
+const WEBSITE_URL = 'http://минутка96.рф/список-приложений/'; // Try HTTP without certificate
 const TELEGRAM_URL = 'https://t.me/+c-W14SGdvFczMzZi';
 
 // Enhanced dark theme CSS injection for the website
