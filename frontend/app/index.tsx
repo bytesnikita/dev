@@ -190,6 +190,7 @@ export default function Index() {
               onLoad={handleWebViewLoad}
               onError={handleWebViewError}
               onLoadEnd={() => setLoading(false)}
+              onLoadStart={() => setLoading(true)}
               injectedJavaScript={DARK_THEME_CSS}
               javaScriptEnabled={true}
               domStorageEnabled={true}
@@ -199,6 +200,15 @@ export default function Index() {
               showsVerticalScrollIndicator={false}
               allowsInlineMediaPlayback={true}
               mediaPlaybackRequiresUserAction={false}
+              mixedContentMode="compatibility"
+              onHttpError={(syntheticEvent) => {
+                const { nativeEvent } = syntheticEvent;
+                console.warn('HTTP error:', nativeEvent);
+              }}
+              onNavigationStateChange={(navState) => {
+                console.log('Navigation state changed:', navState.url);
+              }}
+              userAgent="Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36"
             />
             
             {/* Loading Overlay */}
