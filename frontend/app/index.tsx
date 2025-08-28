@@ -267,7 +267,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#87CEEB',
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 8,
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.3)',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 8,
+      },
+      default: {
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.3)',
+      },
+    }),
   },
 });
