@@ -17,7 +17,7 @@ import { Ionicons } from '@expo/vector-icons';
 const WEBSITE_URL = 'https://xn--80ajbuhsbe.xn--p1ai'; // минутка96.рф in punycode
 const TELEGRAM_URL = 'https://t.me/+c-W14SGdvFczMzZi';
 
-// Dark theme CSS injection for the website
+// Enhanced dark theme CSS injection for the website
 const DARK_THEME_CSS = `
   (function() {
     const style = document.createElement('style');
@@ -31,37 +31,83 @@ const DARK_THEME_CSS = `
       body, html {
         background-color: #1a1a1a !important;
         color: #ffffff !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui !important;
       }
       
-      div, span, p, h1, h2, h3, h4, h5, h6 {
+      div, span, p, h1, h2, h3, h4, h5, h6, li, td, th {
         background-color: transparent !important;
         color: #ffffff !important;
       }
       
       a {
         color: #87CEEB !important;
+        text-decoration: underline !important;
       }
       
-      input, textarea, select {
+      a:hover {
+        color: #B0E0E6 !important;
+      }
+      
+      input, textarea, select, button {
         background-color: #2d2d2d !important;
         color: #ffffff !important;
         border: 1px solid #555555 !important;
+        border-radius: 4px !important;
       }
       
       img {
-        opacity: 0.8 !important;
-        filter: brightness(0.8) !important;
+        opacity: 0.85 !important;
+        filter: brightness(0.85) contrast(1.1) !important;
       }
       
-      .header, .nav, .menu {
+      .header, .nav, .menu, header, nav {
+        background-color: #262626 !important;
+        border-bottom: 1px solid #333333 !important;
+      }
+      
+      .content, .main, .article, main, article {
+        background-color: #1a1a1a !important;
+        padding: 12px !important;
+      }
+      
+      table {
+        background-color: #1a1a1a !important;
+        border: 1px solid #333333 !important;
+      }
+      
+      tr:nth-child(even) {
         background-color: #262626 !important;
       }
       
-      .content, .main, .article {
-        background-color: #1a1a1a !important;
+      .sidebar, aside {
+        background-color: #222222 !important;
+      }
+      
+      /* Mobile optimizations */
+      body {
+        font-size: 16px !important;
+        line-height: 1.6 !important;
+      }
+      
+      /* Ensure text is readable */
+      .white, .light {
+        color: #ffffff !important;
+      }
+      
+      .black, .dark {
+        color: #cccccc !important;
       }
     \`;
     document.head.appendChild(style);
+    
+    // Re-apply dark theme after dynamic content loads
+    setTimeout(() => {
+      document.head.appendChild(style);
+    }, 1000);
+    
+    setTimeout(() => {
+      document.head.appendChild(style);
+    }, 3000);
   })();
 `;
 
