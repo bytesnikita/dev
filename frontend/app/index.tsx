@@ -364,6 +364,25 @@ const styles = StyleSheet.create({
   refreshButton: {
     padding: 8,
   },
+  headerButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  headerTelegramButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#333333',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 15,
+    gap: 4,
+  },
+  headerTelegramText: {
+    color: '#87CEEB',
+    fontSize: 12,
+    fontWeight: '600',
+  },
   webViewContainer: {
     flex: 1,
     position: 'relative',
