@@ -14,7 +14,7 @@ import { WebView } from 'react-native-webview';
 import * as Linking from 'expo-linking';
 import { Ionicons } from '@expo/vector-icons';
 
-const WEBSITE_URL = 'https://минутка96.рф';
+const WEBSITE_URL = 'https://xn--80ajbuhsbe.xn--p1ai'; // минутка96.рф in punycode
 const TELEGRAM_URL = 'https://t.me/+c-W14SGdvFczMzZi';
 
 // Dark theme CSS injection for the website
