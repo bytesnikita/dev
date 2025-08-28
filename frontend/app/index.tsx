@@ -114,7 +114,22 @@ const DARK_THEME_CSS = `
 export default function Index() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState(WEBSITE_URL);
+  const [timeoutReached, setTimeoutReached] = useState(false);
   const webViewRef = useRef(null);
+
+  // Timeout mechanism
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      if (loading) {
+        setTimeoutReached(true);
+        setError(true);
+        setLoading(false);
+      }
+    }, 20000); // 20 second timeout
+
+    return () => clearTimeout(timer);
+  }, [loading, currentUrl]);
 
   const handleTelegramPress = async () => {
     try {
