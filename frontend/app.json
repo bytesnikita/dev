@@ -1,22 +1,49 @@
 {
   "expo": {
-    "name": "frontend",
-    "slug": "frontend",
+    "name": "Минутка96",
+    "slug": "minutka96-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "frontend",
-    "userInterfaceStyle": "automatic",
+    "scheme": "minutka96",
+    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
+    "primaryColor": "#87CEEB",
+    "description": "Мобильное приложение для просмотра сайта минутка96.рф с темной темой",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.minutka96.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#000"
+        "backgroundColor": "#1a1a1a"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.minutka96.app",
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.QUERY_ALL_PACKAGES"
+      ],
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "https",
+              "host": "t.me"
+            },
+            {
+              "scheme": "tg"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -31,7 +58,7 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#000"
+          "backgroundColor": "#1a1a1a"
         }
       ]
     ],
